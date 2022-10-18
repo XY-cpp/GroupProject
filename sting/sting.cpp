@@ -1,4 +1,6 @@
+#include <cassert>
 #include"sting.h"
+
 void sting::resize(size_t lenNew)
 {
 	char *pNew = new char[lenNew];

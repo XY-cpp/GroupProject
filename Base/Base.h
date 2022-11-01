@@ -9,7 +9,7 @@ private:
 	size_t len=0;
 public:
 	Base();
-	~Base();
+	virtual ~Base();
 
 	Base(const Base<T>& t){ *this = t; };
 	Base<T>& operator=(const Base<T>& t);
@@ -21,7 +21,7 @@ public:
 	virtual bool operator!=(const Base<T>& t){ return ~(*this==t); }
 
 	void resize(size_t lenNew);
-	size_t size(){ return len; };
+	size_t size() const { return len; };
 };
 template<class T>
 T& Base<T>::operator[](const size_t &t)

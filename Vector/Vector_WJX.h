@@ -11,14 +11,22 @@
 #include <initializer_list>
 #include "../Base/Base.h"
 template<class T>
-class Vector:public Base<T>{
+class Vector:public Base<T>
+{
 private:
     T* p=NULL;
     size_t len=0;
 public:
-    Vector();
-    ~Vector();
-
+    Base<T>()
+    {
+        this->p = NULL;
+        this->len = 0;
+    }
+    ~Base<T>()
+    {
+        if(this->len) delete [] this->p;
+        this->len = 0;
+    }
     Vector(const Vector<T>& t){ *this = t; };
     Vector<T>& operator=(const Vector<T>& t);
 
@@ -63,20 +71,6 @@ public:
         return in;
     }
 };
-
-template<class T>
-Vector<T>::Vector()
-{
-    this->p = NULL;
-    this->len = 0;
-}
-
-template<class T>
-Vector<T>::~Vector()
-{
-    if(this->len) delete [] this->p;
-    this->len = 0;
-}
 
 template<class T>
 Vector<T>& Vector<T>::operator=(const Vector<T>& t)

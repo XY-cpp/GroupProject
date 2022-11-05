@@ -4,3 +4,4 @@
 !/.gitignore
 build/
 cmake-build-debug/
+CMakeSettings.json

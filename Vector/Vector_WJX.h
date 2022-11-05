@@ -13,20 +13,9 @@
 template<class T>
 class Vector:public Base<T>
 {
-private:
-    T* p=NULL;
-    size_t len=0;
 public:
-    Base<T>()
-    {
-        this->p = NULL;
-        this->len = 0;
-    }
-    ~Base<T>()
-    {
-        if(this->len) delete [] this->p;
-        this->len = 0;
-    }
+    Vector();
+
     Vector(const Vector<T>& t){ *this = t; };
     Vector<T>& operator=(const Vector<T>& t);
 
@@ -35,6 +24,7 @@ public:
     Vector<T>& operator=(const std::initializer_list<T>& t);
     bool operator==(const Vector<T>& t);
     bool operator!=(const Vector<T>& t){ return ~(*this==t); }
+    void Output(ostream&out)const;
 
     Vector<T>& operator+=(const Vector<T>& t);//a vector add a vector
     Vector<T>operator+(Vector<T> t){ return t += *this; };
@@ -48,19 +38,19 @@ public:
 
     T operator*(const Vector<T>& t);//Dot product
 
-    void resize(size_t lenNew);//change the dimension of a vector
-    size_t size(){ return len; };//get the size of a vector
+    //void resize(size_t lenNew);//change the dimension of a vector
+    size_t size(){ return this->len; };//get the size of a vector
     long double length();//get the length of a vector
 
-    friend std::ostream &operator<<(std::ostream& out ,const Vector<T>& t)
-    {
-        out << "{" ;
-        if(t.len) out << t[0];
-        for(size_t i = 1; i < t.len; i++)
-            out << "," << t[i] ;
-        out << "}";
-        return out;
-    }
+//    friend std::ostream &operator<<(std::ostream& out ,const Vector<T>& t)
+//    {
+//        out << "{" ;
+//        if(t.len) out << t[0];
+//        for(size_t i = 1; i < t.len; i++)
+//            out << "," << t[i] ;
+//        out << "}";
+//        return out;
+//    }
     friend std::istream &operator>>(std::istream& in ,Vector<T>& t)
     {
         size_t len;
@@ -73,11 +63,18 @@ public:
 };
 
 template<class T>
+Vector<T>::Vector()
+{
+    this->p = NULL;
+    this->len = 0;
+}
+
+template<class T>
 Vector<T>& Vector<T>::operator=(const Vector<T>& t)
 {
     if(this->len) delete [] this->p;
     this->len = t.len;
-    p = new T[this->len];
+    this->p = new T[this->len];
     std::memcpy(this->p, t.p, this->len * sizeof(T));
     return *this;
 }
@@ -87,10 +84,19 @@ Vector<T>& Vector<T>::operator=(const std::initializer_list<T>& t)
 {
     if(this->len) delete [] this->p;
     this->len = t.size();
-    p = new T[this->len];
+    this->p = new T[this->len];
     for(size_t i = 0; i < t.size(); i++)
-        p[i] = *(t.begin() + i);
+        this->p[i] = *(t.begin() + i);
     return *this;
+}
+template<class T>
+void Vector<T>::Output(ostream &out) const
+{
+    out << "{" ;
+    if(this->len) out << this->p[0];
+    for(size_t i = 1; i < this->len; i++)
+        out << "," << this->p[i] ;
+    out << "}";
 }
 
 template<class T>
@@ -173,4 +179,6 @@ long double Vector<T>::length()
         res += std::pow((*this)[i], 2);
     return std::sqrt(res);
 }
+
+
 #endif //XY_VECTOR_WJX_H
